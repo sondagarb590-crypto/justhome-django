@@ -14,16 +14,16 @@
 
 ## Setup Instructions
 
-### Step 1 - Python install karo (agar nahi hai)
+### Step 1 - Python install karo
 Download from: https://www.python.org/downloads/
 (Python 3.10 or higher)
 
-### Step 2 - Project folder mein jao
+### Step 2 - Open Project Folder
 ```
 cd justhome_project
 ```
 
-### Step 3 - Virtual Environment banao (recommended)
+### Step 3 - Create Virtual Environment (recommended)
 ```
 python -m venv venv
 ```
@@ -31,18 +31,18 @@ Activate karo:
 - Windows: `venv\Scripts\activate`
 - Mac/Linux: `source venv/bin/activate`
 
-### Step 4 - Requirements install karo
+### Step 4 - Requirements install
 ```
 pip install -r requirements.txt
 ```
 
-### Step 5 - Database setup karo
+### Step 5 - Database setup 
 ```
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### Step 6 - Admin user banao
+### Step 6 - Admin user 
 ```
 python manage.py createsuperuser
 ```
@@ -51,7 +51,7 @@ Ya directly:
 python manage.py shell -c "from django.contrib.auth import get_user_model; U=get_user_model(); U.objects.create_superuser('admin','admin@test.com','admin123')"
 ```
 
-### Step 7 - Server chalaao
+### Step 7 - Server run
 ```
 python manage.py runserver
 ```

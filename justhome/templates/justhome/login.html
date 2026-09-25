@@ -1,0 +1,29 @@
+{% extends 'justhome/base.html' %}
+{% block title %}Login - JustHome{% endblock %}
+
+{% block content %}
+<div class="auth-card" style="padding-top:20px;">
+    <div class="text-center mb-4">
+        <span style="font-size:2.5rem;">🏠</span>
+        <h2 class="mt-2">Welcome Back</h2>
+        <p class="text-muted">Login to your JustHome account</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Username</label>
+            {{ form.username }}
+        </div>
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Password</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="btn-primary-custom btn">Login</button>
+    </form>
+
+    <p class="text-center mt-4 text-muted">
+        Don't have an account? <a href="{% url 'register' %}" style="color:#1F4B43;font-weight:600;">Register here</a>
+    </p>
+</div>
+{% endblock %}

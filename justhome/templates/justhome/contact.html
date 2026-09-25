@@ -1,0 +1,55 @@
+{% extends 'justhome/base.html' %}
+{% block title %}Contact Us - JustHome{% endblock %}
+
+{% block content %}
+<div style="padding-top:100px;" class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow p-5" style="border-radius:20px;">
+                <h2 class="fw-bold mb-1">Contact Us</h2>
+                <p class="text-muted mb-4">We'd love to hear from you. Send us a message!</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Your Name *</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email *</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Phone (Optional)</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Message *</label>
+                        {{ form.message }}
+                    </div>
+                    <button type="submit" class="btn fw-bold px-5" style="background:#1F4B43;color:#fff;border-radius:999px;padding:.8rem 2rem;">
+                        <i class="bi bi-send"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="card border-0 p-4" style="border-radius:20px;background:#1F4B43;color:#fff;">
+                <h4 class="fw-bold mb-4">Get in Touch</h4>
+                <div class="d-flex gap-3 mb-3">
+                    <i class="bi bi-envelope fs-4"></i>
+                    <div><strong>Email</strong><br><span style="color:#ccc;">hi@justhome.com</span></div>
+                </div>
+                <div class="d-flex gap-3 mb-3">
+                    <i class="bi bi-telephone fs-4"></i>
+                    <div><strong>Phone</strong><br><span style="color:#ccc;">(123) 456-7890</span></div>
+                </div>
+                <div class="d-flex gap-3">
+                    <i class="bi bi-geo-alt fs-4"></i>
+                    <div><strong>Address</strong><br><span style="color:#ccc;">99 Fifth Avenue, 3rd Floor<br>San Francisco, CA</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

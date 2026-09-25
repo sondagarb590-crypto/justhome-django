@@ -1,0 +1,170 @@
+{% extends 'justhome/base.html' %}
+{% load custom_tags %}
+{% block title %}JustHome - Find Your Dream Home{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<header class="hero">
+    <div class="container text-center">
+        <span class="tag">LET US GUIDE YOUR HOME</span>
+        <h1>Believe in finding it</h1>
+        <p class="lead">Search properties for sale and to rent</p>
+
+        <form class="search-wrap" method="GET" action="{% url 'property_list' %}">
+            <div class="input-group">
+                <input type="text" name="query" class="form-control"
+                    placeholder="Enter city, address or title..."
+                    value="{{ search_query }}" aria-label="search">
+                <button class="btn-search" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-center flex-wrap mt-3 chips-wrapper">
+            <a href="{% url 'property_list' %}?property_type=villa" class="chips">
+                <i class="bi bi-house-door"></i> Modern Villa
+            </a>
+            <a href="{% url 'property_list' %}?property_type=apartment" class="chips">
+                <i class="bi bi-building"></i> Apartment
+            </a>
+            <a href="{% url 'property_list' %}?property_type=townhouse" class="chips">
+                <i class="bi bi-houses-fill"></i> Town House
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- WHY WORK WITH US -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h3 class="fw-bold">Why You Should Work With Us</h3>
+        <p class="text-muted">We help you find your perfect home with ease and trust.</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="featyre-box">
+                <i class="bi bi-houses fs-1 text-success"></i>
+                <h5>Wide Range of Properties</h5>
+                <p>We offer a huge selection of verified properties across all major cities.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="featyre-box">
+                <i class="bi bi-key fs-1 text-success"></i>
+                <h5>Buy or Rent Homes</h5>
+                <p>We sell and rent homes at the best market price quickly and easily.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="featyre-box">
+                <i class="bi bi-shield-check fs-1 text-success"></i>
+                <h5>Trusted by Thousands</h5>
+                <p>Join thousands of happy families who found their dream home with us.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED PROPERTIES -->
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h3>Featured Properties</h3>
+        <p class="text-muted">Hand-picked properties just for you</p>
+        <div class="d-flex justify-content-center gap-2">
+            <a href="{% url 'property_list' %}" class="btn btn-outline-dark active rounded-pill">All Properties</a>
+            <a href="{% url 'property_list' %}?listing_type=sale" class="btn btn-outline-dark rounded-pill">For Sale</a>
+            <a href="{% url 'property_list' %}?listing_type=rent" class="btn btn-outline-dark rounded-pill">For Rent</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for property in properties %}
+        <div class="col-md-4">
+            <div class="card proparty-card" style="min-height:320px;">
+                <div class="proparty-badge">
+                    <span class="badge bg-{% if property.listing_type == 'sale' %}success{% else %}primary{% endif %}">
+                        FOR {{ property.listing_type|upper }}
+                    </span>
+                    {% if property.is_featured %}
+                    <span class="badge bg-warning text-dark">Featured</span>
+                    {% endif %}
+                </div>
+                {% if property.image %}
+                    <img src="{{ property.image.url }}" class="card-img-top" style="height:260px;object-fit:cover;" />
+                {% else %}
+                    <div class="no-img-placeholder"><i class="bi bi-house-door"></i></div>
+                {% endif %}
+                <div class="property-info">
+                    <h6 class="fw-bold">{{ property.title }}</h6>
+                    <p class="text-muted mb-1"><i class="bi bi-geo-alt"></i> {{ property.address }}</p>
+                    <div class="d-flex justify-content-between text-muted">
+                        <h6 class="text-danger">${{ property.price|floatformat:0 }}</h6>
+                        <span><i class="bi bi-house-door"></i> {{ property.bedrooms }}</span>
+                        <span><i class="bi bi-droplet"></i> {{ property.bathrooms }}</span>
+                        <span><i class="bi bi-aspect-ratio"></i> {{ property.area_sqft }} sqft</span>
+                    </div>
+                    <a href="{% url 'property_detail' property.pk %}" class="btn btn-sm btn-outline-success mt-2 w-100 rounded-pill">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="bi bi-house-x fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No properties listed yet.</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'add_property' %}" class="btn btn-success rounded-pill">Add First Property</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'property_list' %}" class="btn" style="background:#E7C873;border-radius:999px;padding:.7rem 2rem;">
+            See All Listings <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<!-- CITIES -->
+<div class="container-fluid py-5 text-center" style="background-color:#F7F7F7;">
+    <h3 class="fw-bold">Find Properties in These Cities</h3>
+    <p class="text-muted">Browse top real estate markets</p>
+    <div class="row g-3 justify-content-center mt-3">
+        {% for city in "Chicago,Los Angeles,Miami,Florida,New York"|split:"," %}
+        <div class="col-lg-2 col-md-4 col-10">
+            <a href="{% url 'property_list' %}?query={{ city }}" style="text-decoration:none;">
+                <div class="city-card">
+                    <div style="background:linear-gradient(135deg,#1F4B43,#2d6b5e);height:200px;display:flex;align-items:center;justify-content:center;">
+                        <i class="bi bi-building text-white" style="font-size:3rem;"></i>
+                    </div>
+                    <div class="city-overlay">
+                        <h5>{{ city }}</h5>
+                        <p>View Properties</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- POPULAR MARKETS -->
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <h2>Popular Real Estate Markets</h2>
+        <p class="text-muted">Explore trending locations</p>
+    </div>
+    <div class="market-wrap">
+        {% for city in "The Villages FL,New York,Madera CA,Fontana CA,Moreno Valley CA,Aurora IL,Perris CA,Minnesota Lake MN,Woodbridge VA"|split:"," %}
+        <a href="{% url 'property_list' %}?query={{ city }}" class="market-pill" style="text-decoration:none;color:inherit;">
+            {{ city }} real estate
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add split filter polyfill in template
+</script>
+{% endblock %}

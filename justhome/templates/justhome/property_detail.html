@@ -1,0 +1,125 @@
+{% extends 'justhome/base.html' %}
+{% block title %}{{ property.title }} - JustHome{% endblock %}
+
+{% block content %}
+<div style="padding-top:100px;" class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'property_list' %}">Listings</a></li>
+            <li class="breadcrumb-item active">{{ property.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- LEFT: Image + Details -->
+        <div class="col-lg-8">
+            {% if property.image %}
+                <img src="{{ property.image.url }}" class="w-100 mb-4" style="border-radius:20px;max-height:450px;object-fit:cover;" />
+            {% else %}
+                <div class="no-img-placeholder mb-4" style="height:350px;border-radius:20px;">
+                    <i class="bi bi-house-door"></i>
+                </div>
+            {% endif %}
+
+            <div class="d-flex gap-2 mb-3">
+                <span class="badge bg-{% if property.listing_type == 'sale' %}success{% else %}primary{% endif %} fs-6 px-3 py-2">
+                    FOR {{ property.listing_type|upper }}
+                </span>
+                {% if property.is_featured %}
+                <span class="badge bg-warning text-dark fs-6 px-3 py-2">⭐ Featured</span>
+                {% endif %}
+                <span class="badge bg-secondary fs-6 px-3 py-2">{{ property.get_property_type_display }}</span>
+            </div>
+
+            <h2 class="fw-bold">{{ property.title }}</h2>
+            <p class="text-muted"><i class="bi bi-geo-alt-fill text-danger"></i> {{ property.address }}, {{ property.city }}</p>
+
+            <div class="row g-3 my-3">
+                <div class="col-4 col-md-3">
+                    <div class="card border-0 text-center p-3" style="background:#f8f9fa;border-radius:12px;">
+                        <i class="bi bi-house-door text-success fs-4"></i>
+                        <div class="fw-bold">{{ property.bedrooms }}</div>
+                        <small class="text-muted">Bedrooms</small>
+                    </div>
+                </div>
+                <div class="col-4 col-md-3">
+                    <div class="card border-0 text-center p-3" style="background:#f8f9fa;border-radius:12px;">
+                        <i class="bi bi-droplet text-success fs-4"></i>
+                        <div class="fw-bold">{{ property.bathrooms }}</div>
+                        <small class="text-muted">Bathrooms</small>
+                    </div>
+                </div>
+                <div class="col-4 col-md-3">
+                    <div class="card border-0 text-center p-3" style="background:#f8f9fa;border-radius:12px;">
+                        <i class="bi bi-aspect-ratio text-success fs-4"></i>
+                        <div class="fw-bold">{{ property.area_sqft }}</div>
+                        <small class="text-muted">Sq.Ft</small>
+                    </div>
+                </div>
+            </div>
+
+            {% if property.description %}
+            <h5 class="fw-bold mt-4">Description</h5>
+            <p class="text-muted">{{ property.description }}</p>
+            {% endif %}
+
+            <!-- Owner Actions -->
+            {% if user == property.owner %}
+            <div class="d-flex gap-2 mt-4">
+                <a href="{% url 'edit_property' property.pk %}" class="btn btn-outline-primary rounded-pill">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a href="{% url 'delete_property' property.pk %}" class="btn btn-outline-danger rounded-pill">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- RIGHT: Price + Contact -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow p-4 sticky-top" style="top:100px;border-radius:20px;">
+                <h3 class="fw-bold text-danger">${{ property.price|floatformat:0 }}</h3>
+                <p class="text-muted small">Listed by: <strong>{{ property.owner.get_full_name|default:property.owner.username }}</strong></p>
+                <hr>
+                <p class="text-muted small"><i class="bi bi-calendar"></i> Listed on {{ property.created_at|date:"M d, Y" }}</p>
+                <a href="{% url 'contact' %}" class="btn w-100 fw-bold mt-2" style="background:#1F4B43;color:#fff;border-radius:999px;">
+                    <i class="bi bi-chat-dots"></i> Contact Agent
+                </a>
+                <a href="{% url 'property_list' %}" class="btn btn-outline-secondary w-100 mt-2 rounded-pill">
+                    <i class="bi bi-arrow-left"></i> Back to Listings
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIMILAR PROPERTIES -->
+    {% if similar %}
+    <div class="mt-5">
+        <h4 class="fw-bold mb-4">Similar Properties in {{ property.city }}</h4>
+        <div class="row g-4">
+            {% for p in similar %}
+            <div class="col-md-4">
+                <div class="card proparty-card" style="min-height:300px;">
+                    {% if p.image %}
+                        <img src="{{ p.image.url }}" class="card-img-top" style="height:220px;object-fit:cover;" />
+                    {% else %}
+                        <div class="no-img-placeholder" style="height:220px;"><i class="bi bi-house-door"></i></div>
+                    {% endif %}
+                    <div class="property-info">
+                        <h6 class="fw-bold">{{ p.title }}</h6>
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span class="text-danger fw-bold">${{ p.price|floatformat:0 }}</span>
+                            <span><i class="bi bi-house-door"></i> {{ p.bedrooms }}</span>
+                        </div>
+                        <a href="{% url 'property_detail' p.pk %}" class="btn btn-sm btn-outline-success mt-1 w-100 rounded-pill">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

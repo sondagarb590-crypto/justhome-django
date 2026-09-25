@@ -1,0 +1,32 @@
+{% extends 'justhome/base.html' %}
+{% block title %}My Properties - JustHome{% endblock %}
+{% block content %}
+<div style="padding-top:100px;" class="container py-4">
+    <h3 class="fw-bold">My Properties</h3>
+    <a href="{% url 'add_property' %}" class="btn mb-4" style="background:#1F4B43;color:#fff;border-radius:999px;">+ Add New</a>
+    <div class="row g-4">
+        {% for p in properties %}
+        <div class="col-md-4">
+            <div class="card proparty-card" style="min-height:300px;">
+                {% if p.image %}
+                    <img src="{{ p.image.url }}" class="card-img-top" style="height:220px;object-fit:cover;"/>
+                {% else %}
+                    <div class="no-img-placeholder" style="height:220px;"><i class="bi bi-house-door"></i></div>
+                {% endif %}
+                <div class="property-info">
+                    <h6 class="fw-bold">{{ p.title }}</h6>
+                    <span class="text-danger fw-bold">${{ p.price|floatformat:0 }}</span>
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="{% url 'property_detail' p.pk %}" class="btn btn-sm btn-outline-success rounded-pill">View</a>
+                        <a href="{% url 'edit_property' p.pk %}" class="btn btn-sm btn-outline-primary rounded-pill">Edit</a>
+                        <a href="{% url 'delete_property' p.pk %}" class="btn btn-sm btn-outline-danger rounded-pill">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No properties yet. <a href="{% url 'add_property' %}">Add one!</a></p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

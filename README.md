@@ -14,7 +14,7 @@
 
 ## Setup Instructions
 
-### Step 1 - Python install karo
+### Step 1 - Python install 
 Download from: https://www.python.org/downloads/
 (Python 3.10 or higher)
 

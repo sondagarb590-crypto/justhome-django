@@ -15,7 +15,7 @@
                 {% endif %}
                 <div class="property-info">
                     <h6 class="fw-bold">{{ p.title }}</h6>
-                    <span class="text-danger fw-bold">${{ p.price|floatformat:0 }}</span>
+                    <span class="text-danger fw-bold">₹{{ p.price|floatformat:0 }}</span>
                     <div class="d-flex gap-2 mt-2">
                         <a href="{% url 'property_detail' p.pk %}" class="btn btn-sm btn-outline-success rounded-pill">View</a>
                         <a href="{% url 'edit_property' p.pk %}" class="btn btn-sm btn-outline-primary rounded-pill">Edit</a>

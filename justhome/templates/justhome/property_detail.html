@@ -80,7 +80,7 @@
         <!-- RIGHT: Price + Contact -->
         <div class="col-lg-4">
             <div class="card border-0 shadow p-4 sticky-top" style="top:100px;border-radius:20px;">
-                <h3 class="fw-bold text-danger">${{ property.price|floatformat:0 }}</h3>
+                <h3 class="fw-bold text-danger">₹{{ property.price|floatformat:0 }}</h3>
                 <p class="text-muted small">Listed by: <strong>{{ property.owner.get_full_name|default:property.owner.username }}</strong></p>
                 <hr>
                 <p class="text-muted small"><i class="bi bi-calendar"></i> Listed on {{ property.created_at|date:"M d, Y" }}</p>
@@ -110,7 +110,7 @@
                     <div class="property-info">
                         <h6 class="fw-bold">{{ p.title }}</h6>
                         <div class="d-flex justify-content-between text-muted small">
-                            <span class="text-danger fw-bold">${{ p.price|floatformat:0 }}</span>
+                            <span class="text-danger fw-bold">₹{{ p.price|floatformat:0 }}</span>
                             <span><i class="bi bi-house-door"></i> {{ p.bedrooms }}</span>
                         </div>
                         <a href="{% url 'property_detail' p.pk %}" class="btn btn-sm btn-outline-success mt-1 w-100 rounded-pill">View</a>

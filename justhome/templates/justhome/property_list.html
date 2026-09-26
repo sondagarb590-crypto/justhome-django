@@ -18,11 +18,11 @@
                 {{ form.listing_type }}
             </div>
             <div class="col-md-2">
-                <label class="form-label fw-semibold">Min Price ($)</label>
+                <label class="form-label fw-semibold">Min Price (₹)</label>
                 {{ form.min_price }}
             </div>
             <div class="col-md-2">
-                <label class="form-label fw-semibold">Max Price ($)</label>
+                <label class="form-label fw-semibold">Max Price (₹)</label>
                 {{ form.max_price }}
             </div>
             <div class="col-md-2">
@@ -61,7 +61,7 @@
                     <h6 class="fw-bold">{{ property.title }}</h6>
                     <p class="text-muted mb-1 small"><i class="bi bi-geo-alt"></i> {{ property.address }}</p>
                     <div class="d-flex justify-content-between text-muted small">
-                        <span class="text-danger fw-bold">${{ property.price|floatformat:0 }}</span>
+                        <span class="text-danger fw-bold">₹{{ property.price|floatformat:0 }}</span>
                         <span><i class="bi bi-house-door"></i> {{ property.bedrooms }}</span>
                         <span><i class="bi bi-droplet"></i> {{ property.bathrooms }}</span>
                         <span><i class="bi bi-aspect-ratio"></i> {{ property.area_sqft }}</span>

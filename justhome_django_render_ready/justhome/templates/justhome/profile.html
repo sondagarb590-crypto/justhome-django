@@ -11,17 +11,14 @@
                 <p class="text-muted small">{{ user.email }}</p>
                 <span class="badge bg-success">Member</span>
                 <hr>
-                {% if user.is_superuser %}
                 <a href="{% url 'add_property' %}" class="btn w-100 fw-bold" style="background:#1F4B43;color:#fff;border-radius:999px;">
                     + Add Property
                 </a>
-                {% endif %}
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger w-100 mt-2 rounded-pill">Logout</a>
             </div>
         </div>
         <div class="col-lg-9">
-            {% if user.is_superuser %}
-            <h4 class="fw-bold mb-4">All Listed Properties ({{ properties|length }})</h4>
+            <h4 class="fw-bold mb-4">My Listed Properties ({{ properties|length }})</h4>
             {% if properties %}
             <div class="row g-3">
                 {% for p in properties %}
@@ -54,14 +51,6 @@
                 <h5 class="mt-3">No properties yet</h5>
                 <p class="text-muted">You haven't listed any properties yet.</p>
                 <a href="{% url 'add_property' %}" class="btn btn-success rounded-pill px-4">Add Your First Property</a>
-            </div>
-            {% endif %}
-            {% else %}
-            <div class="text-center py-5">
-                <i class="bi bi-house-heart fs-1 text-muted"></i>
-                <h5 class="mt-3">Browse properties</h5>
-                <p class="text-muted">Explore our listings and find your dream home.</p>
-                <a href="{% url 'property_list' %}" class="btn btn-success rounded-pill px-4">View Listings</a>
             </div>
             {% endif %}
         </div>

@@ -1,0 +1,92 @@
+{% extends 'justhome/base.html' %}
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} Property - JustHome{% endblock %}
+
+{% block content %}
+<div style="padding-top:100px;" class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow p-4" style="border-radius:20px;">
+                <h3 class="fw-bold mb-1">{% if edit %}Edit Property{% else %}Add New Property{% endif %}</h3>
+                <p class="text-muted mb-4">Fill in the details below to {% if edit %}update{% else %}list{% endif %} your property.</p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Property Title *</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Listing Type *</label>
+                            {{ form.listing_type }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Property Type *</label>
+                            {{ form.property_type }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Price ($) *</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Area (sq.ft) *</label>
+                            {{ form.area_sqft }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Bedrooms *</label>
+                            {{ form.bedrooms }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Bathrooms *</label>
+                            {{ form.bathrooms }}
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mt-4 pt-2">
+                                <div class="form-check">
+                                    {{ form.is_featured }}
+                                    <label class="form-check-label fw-semibold" for="{{ form.is_featured.id_for_label }}">
+                                        Mark as Featured
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Full Address *</label>
+                            {{ form.address }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">City *</label>
+                            {{ form.city }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Property Image</label>
+                            {{ form.image }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Description</label>
+                            {{ form.description }}
+                        </div>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger mt-3">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p class="mb-0"><strong>{{ field.label }}:</strong> {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn fw-bold px-4" style="background:#1F4B43;color:#fff;border-radius:999px;">
+                            <i class="bi bi-check-lg"></i> {% if edit %}Update Property{% else %}List Property{% endif %}
+                        </button>
+                        <a href="{% url 'property_list' %}" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

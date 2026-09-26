@@ -156,9 +156,7 @@
                         <i class="bi bi-person-circle"></i> Profile
                     </a>
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm rounded-pill">Logout</a>
-                    {% if user.is_superuser %}
                     <a href="{% url 'add_property' %}" class="btn border btn-pill" style="border-radius:999px;">Add Property</a>
-                    {% endif %}
                 {% else %}
                     <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-sm rounded-pill">Login</a>
                     <a href="{% url 'register' %}" class="btn border btn-pill" style="border-radius:999px;">Register</a>
@@ -226,9 +224,7 @@
             <a href="{% url 'property_list' %}">Listings</a>
             <a href="{% url 'contact' %}">Contact</a>
             {% if user.is_authenticated %}
-            {% if user.is_superuser %}
             <a href="{% url 'add_property' %}">Add Property</a>
-            {% endif %}
             <a href="{% url 'profile' %}">My Profile</a>
             {% else %}
             <a href="{% url 'login' %}">Login</a>

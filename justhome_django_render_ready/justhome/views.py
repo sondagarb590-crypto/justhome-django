@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
@@ -9,10 +9,6 @@ from .forms import (
     RegisterForm, LoginForm, PropertyForm,
     ContactForm, NewsletterForm, SearchForm
 )
-
-
-def admin_required(user):
-    return user.is_authenticated and user.is_superuser
 
 
 # ─── HOME ───────────────────────────────────────────────────────────────────
@@ -82,7 +78,7 @@ def property_detail(request, pk):
     })
 
 
-@user_passes_test(admin_required, login_url='home')
+@login_required
 def add_property(request):
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
@@ -97,9 +93,9 @@ def add_property(request):
     return render(request, 'justhome/add_property.html', {'form': form})
 
 
-@user_passes_test(admin_required, login_url='home')
+@login_required
 def edit_property(request, pk):
-    prop = get_object_or_404(Property, pk=pk)
+    prop = get_object_or_404(Property, pk=pk, owner=request.user)
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES, instance=prop)
         if form.is_valid():
@@ -111,9 +107,9 @@ def edit_property(request, pk):
     return render(request, 'justhome/add_property.html', {'form': form, 'edit': True})
 
 
-@user_passes_test(admin_required, login_url='home')
+@login_required
 def delete_property(request, pk):
-    prop = get_object_or_404(Property, pk=pk)
+    prop = get_object_or_404(Property, pk=pk, owner=request.user)
     if request.method == 'POST':
         prop.delete()
         messages.success(request, 'Property deleted.')
@@ -121,9 +117,9 @@ def delete_property(request, pk):
     return render(request, 'justhome/confirm_delete.html', {'property': prop})
 
 
-@user_passes_test(admin_required, login_url='home')
+@login_required
 def my_properties(request):
-    properties = Property.objects.all()
+    properties = Property.objects.filter(owner=request.user)
     return render(request, 'justhome/my_properties.html', {'properties': properties})
 
 
@@ -208,10 +204,7 @@ def newsletter_subscribe(request):
 # ─── PROFILE ─────────────────────────────────────────────────────────────────
 @login_required
 def profile_view(request):
-    if request.user.is_superuser:
-        properties = Property.objects.all()
-    else:
-        properties = Property.objects.none()
+    properties = Property.objects.filter(owner=request.user)
     return render(request, 'justhome/profile.html', {
         'properties': properties,
     })
